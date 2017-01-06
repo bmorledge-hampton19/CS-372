@@ -1,0 +1,60 @@
+/**
+ * A class that extends Building and adds an array list for its occupants (Policemen).
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+public class CityHall extends Building{
+
+	// Array for the occupants.
+	private Police[] officers;
+	
+	// Integers to keep track of the number of officers.
+	int numberOfOfficers;
+	
+	/**
+	 * A default constructor that just uses Building's constructor.
+	 */
+	CityHall() {
+		
+		// Call Building's default constructor.
+		super();
+		
+	}
+	
+	/**
+	 * A constructor which uses Building's constructor with a given name and address.
+	 * @param name specifies the name to be set.
+	 * @param address specifies the address to be set.
+	 */
+	CityHall(String name, String address) {
+		
+		// Call Building's corresponding constructor.
+		super(name,address);
+		
+	}
+	
+	/**
+	 * Adds a given officer to the array of officers.
+	 * @param t specifies the officer to be added.
+	 */
+	public void addTeacher(Teacher t) {
+		// Add the teacher to the array and increment the number of teachers.
+		officers[numberOfOfficers] = t;
+		numberOfOfficers++;
+	}
+	
+	/**
+	 * Returns the teacher at the given index.
+	 * @param i specifies the index of the desired teacher.
+	 * @return the teacher at the given index.
+	 */
+	public Teacher getTeacher(int i) {return teachers[i];}
+	
+	/**
+	 * Returns the student at the given index.
+	 * @param i specifies the index of the desired student.
+	 * @return the student at the given index
+	 */
+	public Kid getStudent(int i) {return students[i];}
+
+}

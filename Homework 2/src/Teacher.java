@@ -3,11 +3,18 @@
  * @author Benjamin Morledge-Hampton
  * @version 1.0 1/5/2017
  */
-public class Teacher extends Person {
+public class Teacher extends Person implements Employee{
 
 	// The teacher's grade level and certification.
 	private int grade; // Kindergarten is represented by the number 0.
 	private String certification;
+	
+	// The teacher's money.
+	private double moneyInDaBank = 0;
+	// The teacher's Salary.
+	private double salary;
+	// The teacher's employeeID.
+	private String employeeID;
 	
 	/**
 	 * Constructs a Teacher with given name, age, phone number, grade, and certification.
@@ -60,5 +67,40 @@ public class Teacher extends Person {
 	 * @param certification specifies the level of certification to be set.
 	 */
 	public void setCertification(String certification) {this.certification = certification;}
+	
+	/**
+	 * Returns the employee's money value.
+	 * @return the employee's money value.
+	 */
+	public double getMoney(){return moneyInDaBank;}
+	
+	/**
+	 * Pays the employee their salary.
+	 */
+	public void payEmployee() {moneyInDaBank+=salary;}
+
+	/**
+	 * Returns the employee's salary.
+	 * @return the employee's salary.
+	 */
+	public double getSalary() {return salary;}
+
+	/**
+	 * Sets the employee's salary.
+	 * @param salary specifies the salary to be set.
+	 */
+	public void setSalary(double salary) {this.salary = salary;}
+
+	/**
+	 * Returns the employee's ID.
+	 * @return the employee's ID.
+	 */
+	public String getEmployeeID() {return employeeID;}
+		
+	/**
+	 * Sets the employee's ID.
+	 * @param employeeID specifies the new ID to be set.
+	 */
+	public void setEmployeeID(String employeeID) {this.employeeID = employeeID;}
 	
 }

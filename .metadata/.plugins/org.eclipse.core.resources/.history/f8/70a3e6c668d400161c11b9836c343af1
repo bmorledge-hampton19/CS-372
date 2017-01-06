@@ -1,0 +1,17 @@
+import java.util.ArrayList;
+/**
+ * A class which contains a bunch of buildings and people and can do a variety of tasks with them.
+ * @author Benjamin
+ * @version 1.0 1/6/2017
+ */
+public class City {
+
+	// Array lists for citizens and buildings in the city.
+	private ArrayList<Building> buildings = new ArrayList<Building>();
+	private ArrayList<Person> citizens = new ArrayList<Person>();
+	
+	public void addBuilding(Building b) {
+		buildings.add(b);
+	}
+	
+}

@@ -1,6 +1,6 @@
 /**
  * A class that extends Person and adds a string for favorite candy.
- * @author Benjamin  Morledge-Hampton
+ * @author Benjamin Morledge-Hampton
  * @version 1.0 1/5/2017
  */
 public class Kid extends Person {

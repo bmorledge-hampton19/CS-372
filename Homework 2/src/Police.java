@@ -1,16 +1,22 @@
 /**
- * A class that extends Person and adds an enum field for the officer's specific role.
+ * A class that extends Person, implements employee, and adds an enum field for the officer's specific role.
  * @author Benjamin Morledge-Hampton
  * @version 1.0 1/5/2017
  */
-public class Police extends Person {
+public class Police extends Person implements Employee{
 
 	// The enumerator that specifies the officer's role.
 	public enum Role{PATROL, SERGEANT, CAPTAIN, CHIEF};
 	private Role role;
+	// The officer's money.
+	private double moneyInDaBank = 0;
+	// The officer's Salary.
+	private double salary;
+	// The officer's employeeID.
+	private String employeeID;
 	
 	/**
-	 * Constructs a Police officer with given name, age, phone number, and role.
+	 * Constructs a Police officer with given name, age, phone number, and role, .
 	 * @see Person.java
 	 * @param name specifies the officer's name.
 	 * @param age specifies the officer's age.
@@ -44,5 +50,40 @@ public class Police extends Person {
 	 * @param role specifies the new enum type.
 	 */
 	public void setRole(Role role) {this.role = role;}
+
+	/**
+	 * Returns the employee's money value.
+	 * @return the employee's money value.
+	 */
+	public double getMoney(){return moneyInDaBank;}
+	
+	/**
+	 * Pays the employee their salary.
+	 */
+	public void payEmployee() {moneyInDaBank+=salary;}
+
+	/**
+	 * Returns the employee's salary.
+	 * @return the employee's salary.
+	 */
+	public double getSalary() {return salary;}
+
+	/**
+	 * Sets the employee's salary.
+	 * @param salary specifies the salary to be set.
+	 */
+	public void setSalary(double salary) {this.salary = salary;}
+
+	/**
+	 * Returns the employee's ID.
+	 * @return the employee's ID.
+	 */
+	public String getEmployeeID() {return employeeID;}
+		
+	/**
+	 * Sets the employee's ID.
+	 * @param employeeID specifies the new ID to be set.
+	 */
+	public void setEmployeeID(String employeeID) {this.employeeID = employeeID;}
 	
 }
