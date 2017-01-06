@@ -1,0 +1,189 @@
+import java.util.Random;
+import java.util.Scanner;
+
+
+/**
+ * An exception that is thrown when a method attempts to create a variable outside of its bounds.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+class OutOfBoundsException extends Exception {
+	
+	// The bounds for the variable.
+	int lowerBound;
+	int upperBound;
+	
+	/**
+	 * A constructor which creates the exception with the give bounds.
+	 * @param lowerBound specifies the lowest valid number.
+	 * @param upperBound specifies the highest valid number.
+	 */
+	OutOfBoundsException (int lowerBound, int upperBound) {
+		this.lowerBound = lowerBound;
+		this.upperBound = upperBound;
+	}
+	
+	/**
+	 * Returns the error message based on the given bounds.
+	 * @return The error message.
+	 */
+	public String getMessage() {
+		
+		return String.format("The given value must be between %d and %d and therefore will not be assigned.", lowerBound, upperBound);
+		
+	}
+}
+
+
+/**
+ * An exception that is thrown when a method attempts to create a duplicate which is not allowed.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+class InUseException extends Exception {
+	/**
+	 * A constructor which creates the exception with the given message using the superclas's constructor.
+	 * @param message specifies the message representing the exception.
+	 */
+	InUseException (String message) {super(message);}
+}
+
+
+/**
+ * A class that represents a person by their name, age, and phone number.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+public class Person {
+
+	// The three indentifiers for the Person
+	private String name;
+	private int age;
+	private int phoneNumber;
+	
+	// The random number generator
+	Random rng = new Random();
+	// A scanner
+	Scanner s = new Scanner(System.in);
+	
+	// An array that keeps track of what phoneNumbers are in use.
+	private static int[] usedPhoneNumbers;
+	// Keeps track of how many people have been created so that integers can be added to the above array more easily.
+	private static int numberOfPeople = 0;
+	
+	
+	/**
+	 * The default constructor which creates a person named Bob with a random age and phone number
+	 */
+	Person() {
+		
+		// Set the name to "Bob"
+		name = "Bob";
+		
+		// Create a random phone number and age.
+		age = rng.nextInt(81) + 20;
+		phoneNumber = rng.nextInt(9000000) + 1000000;
+		
+		// Check to make sure the phone number is valid, generating new numbers if necessary until it is.
+		while (isNumberInUse(phoneNumber)) phoneNumber = rng.nextInt(9000000) + 1000000;
+		
+		// Finally, add the new phone number to the list of existing numbers and increment the number of people.
+		usedPhoneNumbers[numberOfPeople] = phoneNumber;
+		numberOfPeople++;
+		
+	}
+	
+	/**
+	 * A constructor which takes a phone number, name, and age and creates a person based on those parameters.
+	 * @param phoneNumber specifies the phone number for the new person.
+	 * @param name specifies the name for the new person.
+	 * @param age specifies the age for the new person.
+	 * @throws InUseException if the given phone number is already in use.
+	 * @throws OutOfBoundsException if the given phone number or age is too large or too small.
+	 */
+	Person (int phoneNumber, String name, int age) {
+		
+		// A boolean used to determine whether or not an instance variable has been properly set.
+		boolean validSet = false;
+		
+		// Set the given name.
+		this.name = name;
+		
+		// Attempt to set the phoneNumber.  If it is invalid, ask the user to input new numbers until it is valid.
+		while(!validSet) {
+			
+			// Assume the new value is valid until proven otherwise.
+			validSet = true;
+			
+			try {setPhoneNumber(phoneNumber);}
+			catch (Exception e) {
+				// Print out the error message, set validSet to false and request new input.
+				
+				System.out.printf("Error: %s\n", e.getMessage());
+				validSet = false;
+				
+				System.out.printf("Input a new phoneNumber for %s.", name);
+				s.nextInt();
+			}
+			
+		}
+		
+		// Add the phone number to the list of used numbers, and increment the number of people.
+		usedPhoneNumbers[numberOfPeople] = phoneNumber;
+		numberOfPeople++;
+		
+		
+		
+		
+	}
+	
+	
+	/**
+	 * A function which checks to make sure that the given phone number is not in use.
+	 * @param number specifies the phone number to be checked.
+	 * @return returns true if the number is in use, otherwise returns false.
+	 */
+	private boolean isNumberInUse(int number) {
+		
+		// Loop through the array of used phone numbers looking for matches
+		for (int n : usedPhoneNumbers) {
+			if (number == n) return true;
+		}
+		
+		return false;
+		
+	}
+	
+	// Getters and setters...
+	
+	public String getName() {return name;}
+	
+	public int getPhoneNumber() {return phoneNumber;}
+	
+	public int getAge() {return age;}
+	
+	
+	public void setName(String name) {this.name = name;}
+	
+	public void setPhoneNumber(int phoneNumber) throws InUseException, OutOfBoundsException {
+		
+		// Check to see if the given phone number can be set.
+		// If it can, set it.  Otherwise, throw the corresponding exception.  The phone number will remain at 0 in this case.
+		if (isNumberInUse(phoneNumber)) throw new InUseException("The given phone number is already in use and will not be assigned.");
+		else if (phoneNumber < 1000000 || phoneNumber > 9999999) throw new OutOfBoundsException(1000000,9999999);
+		else {
+			this.phoneNumber = phoneNumber;
+		}
+		
+	}
+	
+	public void setAge(int age) throws OutOfBoundsException {
+		
+		// Check to see if the given age is within valid bounds.
+				// If it is, set it.  Otherwise, throw an OutOfBoundsException.  The age will remain at 0 in this case.
+				if (age < 0 || age > 200) throw new OutOfBoundsException(0,200);
+				else this.age = age;
+		
+	}
+	
+}

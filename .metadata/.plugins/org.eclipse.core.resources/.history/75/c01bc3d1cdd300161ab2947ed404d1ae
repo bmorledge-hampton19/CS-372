@@ -1,0 +1,45 @@
+import java.util.Random;
+
+/**
+ * A class that represents a person by their name, age, and phone number.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+public class Person {
+
+	// The three indentifiers for the Person
+	private String name;
+	private int age;
+	private int phoneNumber;
+	
+	// The random number generator
+	Random rng = new Random();
+	
+	// An array that keeps track of what phoneNumbers are in use.
+	private static int[] usedPhoneNumbers;
+	
+	/**
+	 * The default constructor which creates a person named Bob with a random age and phone number
+	 */
+	Person() {
+		
+		
+	}
+	
+	/**
+	 * A function which checks to make sure that the given phone number is not in use.
+	 * @param number specifies the phone number to be checked.
+	 * @return returns true if the number is in use, otherwise returns false.
+	 */
+	private boolean isNumberInUse(int number) {
+		
+		// Loop through the array of used phone numbers looking for matches
+		for (int n : usedPhoneNumbers) {
+			if (number == n) return true;
+		}
+		
+		return false;
+		
+	}
+	
+}
