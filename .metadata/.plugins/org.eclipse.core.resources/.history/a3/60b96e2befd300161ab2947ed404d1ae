@@ -1,0 +1,28 @@
+/**
+ * A simple class that defines a building by its name and address.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+public class Building {
+
+	// Basic identifiers for any building.
+	String name;
+	String address;
+	
+	/**
+	 * A default constructor which makes a building that is my house!
+	 */
+	Building() {
+		// Set name and address to default values.
+		name = "My House";
+		address = "2420 17th St. West";
+	}
+	
+	
+	Building(String name, String address) {
+		// Set the name and address to the given values.
+		this.name = name;
+		this.address = address;
+	}
+	
+}

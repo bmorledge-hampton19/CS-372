@@ -1,0 +1,7 @@
+public interface Employee {
+
+	public double receiveSalary();
+	
+	public void setSalary(double salary);
+	
+}

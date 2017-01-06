@@ -1,0 +1,10 @@
+/**
+ * A class that extends Person and adds an enum field for the officer's specific role.
+ * @author Benjamin
+ * @version 1.0 1/5/2017
+ */
+public class Police extends Person {
+
+	public enum Role{PATROL, SERGEANT, CAPTAIN, CHIEF};
+	
+}
