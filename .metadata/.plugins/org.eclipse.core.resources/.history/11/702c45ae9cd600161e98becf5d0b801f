@@ -67,11 +67,7 @@ public class City {
 		
 	}
 	
-	/**
-	 * A function to check if a person is in school.
-	 * @param p specifies the person to be checked for.
-	 * @return returns true if the person is in school.  Otherwise it returns false.
-	 */
+	
 	public boolean isInSchool(Person p) {
 		
 		// Make sure the given person is either a kid or teacher
@@ -101,11 +97,6 @@ public class City {
 		
 	}
 	
-	/**
-	 * A function to check if a person is at City Hall.
-	 * @param p specifies the person to be checked for.
-	 * @return returns true if the person is at City Hall.  Otherwise it returns false.
-	 */
 	public boolean isAtCityHall(Person p) {
 		
 		// Make sure the given person is a police officer
