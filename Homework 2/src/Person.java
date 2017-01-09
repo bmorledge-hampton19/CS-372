@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -65,7 +66,7 @@ public class Person {
 	Scanner s = new Scanner(System.in);
 	
 	// An array that keeps track of what phoneNumbers are in use.
-	private static int[] usedPhoneNumbers;
+	private static ArrayList<Integer> usedPhoneNumbers = new ArrayList<Integer>();
 	// Keeps track of how many people have been created so that integers can be added to the above array more easily.
 	private static int numberOfPeople = 0;
 	
@@ -86,7 +87,7 @@ public class Person {
 		while (isNumberInUse(phoneNumber)) phoneNumber = rng.nextInt(9000000) + 1000000;
 		
 		// Finally, add the new phone number to the list of existing numbers and increment the number of people.
-		usedPhoneNumbers[numberOfPeople] = phoneNumber;
+		usedPhoneNumbers.add(phoneNumber);
 		numberOfPeople++;
 		
 	}
@@ -125,7 +126,7 @@ public class Person {
 		}
 		
 		// Add the phone number to the list of used numbers, and increment the number of people.
-		usedPhoneNumbers[numberOfPeople] = phoneNumber;
+		usedPhoneNumbers.add(phoneNumber);
 		numberOfPeople++;
 		
 		// Reset validSet.

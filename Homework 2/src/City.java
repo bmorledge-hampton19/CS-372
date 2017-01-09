@@ -11,6 +11,11 @@ public class City {
 	private ArrayList<Person> citizens = new ArrayList<Person>();
 	
 	/**
+	 * The default (and only) constructor 
+	 */
+	City() {}
+	
+	/**
 	 * Adds a given building to the buildings array list.
 	 * @param b specifies the building to be added.
 	 */
@@ -63,16 +68,56 @@ public class City {
 	}
 	
 	
-	public boolean isInSchool(int i) {
+	public boolean isInSchool(Person p) {
 		
 		// Make sure the given person is either a kid or teacher
-		if (citizens.get(i) instanceof Kid || citizens.get(i) instanceof Teacher) {
+		if (p instanceof Kid || p instanceof Teacher) {
 			
 			// Run a loop for all of the schools, checking for citizen and returning true if they are found.
-			
+			for (Building b : buildings) {
+				if (b instanceof School) {
+					
+					// Check all of the teachers in the school.
+					for (int i = 0; i < ((School)b).getNumberOfTeachers(); i++) {
+						if (p == ((School)b).getTeacher(i)) return true;	
+					}
+					
+					// Check all of the students in the school.
+					for (int i = 0; i < ((School)b).getNumberOfStudents(); i++) {
+						if (p == ((School)b).getStudent(i)) return true;
+					}
+					
+				}
+				
+			}
 			
 		}
 		
+		return false;
+		
+	}
+	
+	public boolean isAtCityHall(Person p) {
+		
+		// Make sure the given person is a police officer
+		if (p instanceof Police) {
+			
+			// Run a loop for all of the schools, checking for citizen and returning true if they are found.
+			for (Building b : buildings) {
+				if (b instanceof CityHall) {
+					
+					// Check all of the officers in city hall.
+					for (int i = 0; i < ((CityHall)b).getNumberOfOfficers(); i++) {
+						if (p == ((CityHall)b).getOfficer(i)) return true;	
+					}
+					
+				}
+			}
+		
+		}
+		
+		return false;
+			
 	}
 	
 }

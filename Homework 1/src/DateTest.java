@@ -14,7 +14,7 @@ public class DateTest {
 		Date myBirthday = new Date();
 		Date aDate = new Date(2,2,2018);
 		
-		// Change some stuff for aDate and then display the paramters of both dates.
+		// Change some stuff for aDate and then display the parameters of both dates.
 		aDate.setMonth(aDate.getMonth() - 1);
 		aDate.setDay(aDate.getDay() + 1);
 		aDate.setYear(aDate.getYear() - 1);

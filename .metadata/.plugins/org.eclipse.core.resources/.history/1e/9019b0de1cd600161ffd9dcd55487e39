@@ -1,0 +1,14 @@
+
+public class CityTest {
+
+	public static void main(String[] args) {
+		
+		// Create a City!
+		City myCity = new City();
+		
+		// Create some buildings.
+		CityHall myCityHall = new CityHall("")
+		
+	}
+
+}

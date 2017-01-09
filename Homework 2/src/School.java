@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * A class that extends Building and adds an array for students, and an array for teachers.
  * @author Benjamin Morledge-Hampton
@@ -6,8 +8,8 @@
 public class School extends Building {
 
 	// Arrays for the occupants.
-	private Teacher[] teachers;
-	private Kid[] students;
+	private ArrayList<Teacher> teachers = new ArrayList<Teacher>();
+	private ArrayList<Kid> students = new ArrayList<Kid>();
 	
 	// Integers to keep track of the number of teacher's and students.
 	private int numberOfTeachers;
@@ -41,7 +43,7 @@ public class School extends Building {
 	 */
 	public void addTeacher(Teacher t) {
 		// Add the teacher to the array and increment the number of teachers.
-		teachers[numberOfTeachers] = t;
+		teachers.add(t);
 		numberOfTeachers++;
 	}
 	
@@ -51,7 +53,7 @@ public class School extends Building {
 	 */
 	public void addStudent(Kid k) {
 		// Add the student to the array and increment the number of students.
-		students[numberOfStudents] = k;
+		students.add(k);
 		numberOfStudents++;
 	}
 	
@@ -60,14 +62,14 @@ public class School extends Building {
 	 * @param i specifies the index of the desired teacher.
 	 * @return the teacher at the given index.
 	 */
-	public Teacher getTeacher(int i) {return teachers[i];}
+	public Teacher getTeacher(int i) {return teachers.get(i);}
 	
 	/**
 	 * Returns the student at the given index.
 	 * @param i specifies the index of the desired student.
 	 * @return the student at the given index
 	 */
-	public Kid getStudent(int i) {return students[i];}
+	public Kid getStudent(int i) {return students.get(i);}
 	
 	/**
 	 * Returns the number of students.

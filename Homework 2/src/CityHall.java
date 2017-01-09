@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * A class that extends Building and adds an array list for its occupants (Policemen).
  * @author Benjamin Morledge-Hampton
@@ -6,7 +8,7 @@
 public class CityHall extends Building{
 
 	// Array for the occupants.
-	private Police[] officers;
+	private ArrayList<Police> officers = new ArrayList<Police>();
 	
 	// Integers to keep track of the number of officers.
 	private int numberOfOfficers;
@@ -39,7 +41,7 @@ public class CityHall extends Building{
 	 */
 	public void addOfficer(Police p) {
 		// Add the teacher to the array and increment the number of teachers.
-		officers[numberOfOfficers] = p;
+		officers.add(p);
 		numberOfOfficers++;
 	}
 	
@@ -48,7 +50,7 @@ public class CityHall extends Building{
 	 * @param i specifies the index of the desired officer.
 	 * @return the officer at the given index.
 	 */
-	public Police getOfficer(int i) {return officers[i];}
+	public Police getOfficer(int i) {return officers.get(i);}
 	
 	/**
 	 * Returns the number of officers.
