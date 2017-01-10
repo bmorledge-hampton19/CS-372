@@ -294,20 +294,17 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 					if (b instanceof CityHall) {
 						if (rectangleContainsPoint(e.getX(),e.getY(),b.getImageX(),b.getImageY(),b.getImageWidth(),b.getImageHeight()+100)) {
 							
-							// Record that a valid building has been found.
+							// Remove the citizen from the building and reassign them to the new one.
+							city.removeFromBuilding(moving);
+							
+							((CityHall) b).addOfficer((Police)moving);
+							moving.assignBuilding(b);
+							
+							// Record that the placement has been made.
 							hasBeenPlaced = true;
 							
-							// Make sure that this building does not already contain the citizen.
-							if (b!=moving.getBuilding()) {
-								// Remove the citizen from the building and reassign them to the new one.
-								city.removeFromBuilding(moving);
-								
-								((CityHall) b).addOfficer((Police)moving);
-								moving.assignBuilding(b);
-								
-								// Update the building involved.
-								updateOccupantImages(b);
-							}
+							// Update the building involved.
+							updateOccupantImages(b);
 							
 						}
 					}
@@ -324,27 +321,24 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 					if (b instanceof School) {
 						if (rectangleContainsPoint(e.getX(),e.getY(),b.getImageX(),b.getImageY(),b.getImageWidth(),b.getImageHeight()+100)) {
 							
-							// Record that a valid building has been found.
+							// Remove the citizen from the building and reassign them to the new one.
+							city.removeFromBuilding(moving);
+							
+							if (moving instanceof Teacher) {
+								((School) b).addTeacher((Teacher)moving);
+								moving.assignBuilding(b);
+							}
+							
+							if (moving instanceof Kid) {
+								((School) b).addStudent((Kid)moving);
+								moving.assignBuilding(b);
+							}
+							
+							// Record that the placement has been made.
 							hasBeenPlaced = true;
 							
-							// Make sure that this building does not already contain the citizen.
-							if (b!=moving.getBuilding()) {
-								// Remove the citizen from the building and reassign them to the new one.
-								city.removeFromBuilding(moving);
-								
-								if (moving instanceof Teacher) {
-									((School) b).addTeacher((Teacher)moving);
-									moving.assignBuilding(b);
-								}
-								
-								if (moving instanceof Kid) {
-									((School) b).addStudent((Kid)moving);
-									moving.assignBuilding(b);
-								}
-								
-								// Update the building involved.
-								updateOccupantImages(b);
-							}
+							// Update the building involved.
+							updateOccupantImages(b);
 							
 						}
 					}

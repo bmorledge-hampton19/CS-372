@@ -294,16 +294,16 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 					if (b instanceof CityHall) {
 						if (rectangleContainsPoint(e.getX(),e.getY(),b.getImageX(),b.getImageY(),b.getImageWidth(),b.getImageHeight()+100)) {
 							
-							// Record that a valid building has been found.
-							hasBeenPlaced = true;
-							
-							// Make sure that this building does not already contain the citizen.
+							// First, make sure that this building does not already contiain the citizen.
 							if (b!=moving.getBuilding()) {
 								// Remove the citizen from the building and reassign them to the new one.
 								city.removeFromBuilding(moving);
 								
 								((CityHall) b).addOfficer((Police)moving);
 								moving.assignBuilding(b);
+								
+								// Record that the placement has been made.
+								hasBeenPlaced = true;
 								
 								// Update the building involved.
 								updateOccupantImages(b);
@@ -324,10 +324,7 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 					if (b instanceof School) {
 						if (rectangleContainsPoint(e.getX(),e.getY(),b.getImageX(),b.getImageY(),b.getImageWidth(),b.getImageHeight()+100)) {
 							
-							// Record that a valid building has been found.
-							hasBeenPlaced = true;
-							
-							// Make sure that this building does not already contain the citizen.
+							// First, make sure that this building does not already contiain the citizen.
 							if (b!=moving.getBuilding()) {
 								// Remove the citizen from the building and reassign them to the new one.
 								city.removeFromBuilding(moving);
@@ -341,6 +338,9 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 									((School) b).addStudent((Kid)moving);
 									moving.assignBuilding(b);
 								}
+								
+								// Record that the placement has been made.
+								hasBeenPlaced = true;
 								
 								// Update the building involved.
 								updateOccupantImages(b);
