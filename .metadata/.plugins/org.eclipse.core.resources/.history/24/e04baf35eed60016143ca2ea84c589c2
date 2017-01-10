@@ -1,0 +1,103 @@
+import java.awt.Image;
+import java.awt.Toolkit;
+
+/**
+ * A simple class that defines a building by its name and address.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+public class Building {
+
+	// Basic identifiers for any building.
+	private String name;
+	private String address;
+	
+	// The image that will represent the building in the VisualCity.
+	private Image image;
+	// The positioning for the image in the VisualCity.
+	private int imageXPos, imageYPos;
+	
+	/**
+	 * A default constructor which makes a building that is my house!
+	 */
+	Building() {
+		// Set name and address to default values.
+		name = "My House";
+		address = "2420 17th St. West";
+	}
+	
+	/**
+	 * A constructor which sets the name and address of the building from given values.
+	 * @param name specifies the building's name to be set.
+	 * @param address specifies the building's address to be set.
+	 */
+	Building(String name, String address) {
+		// Set the name and address to the given values.
+		this.name = name;
+		this.address = address;
+	}
+	
+	/**
+	 * Returns the building's name.
+	 * @return the building's name.
+	 */
+	public String getName() {return name;}
+	
+	/**
+	 * Returns the building's address.
+	 * @return the building's address.
+	 */
+	public String getAddress() {return address;}
+	
+	/**
+	 * Sets the building's name to a given value.
+	 * @param name specifies the name to be set.
+	 */
+	public void setName(String name) {this.name = name;}
+	
+	/**
+	 * Sets the building's address to a given value.
+	 * @param address specifies the address to be set.
+	 */
+	public void setAddress(String address) {this.address = address;}
+	
+	/**
+	 * Creates the building's image object with the given parameters.
+	 * @param fileLocation specifies the file location of the image
+	 * @param xSize specifies the width of the image.
+	 * @param ySize specifies the height of the image.
+	 */
+	public void createImage(String fileLocation, int xSize, int ySize) {
+		image = Toolkit.getDefaultToolkit().getImage(getClass().getResource(fileLocation));
+		image = image.getScaledInstance(xSize, ySize, Image.SCALE_SMOOTH);
+	}
+	
+	/**
+	 * Returns the building's image.
+	 * @return the building's image.
+	 */
+	public Image getImage() {return image;}
+	
+	/**
+	 * Returns the x position of the image of the building.
+	 * @return the x position of the person's image.
+	 */
+	public int getImageX() {return imageXPos;}
+	
+	/**
+	 * Returns the y position of the building's image.
+	 * @return the y position of the building's image.
+	 */
+	public int getImageY() {return imageYPos;}
+	
+	/**
+	 * Sets the image to a new position.
+	 * @param imageXPos specifies the new x coordinate.
+	 * @param imageYPos specifies the new y coordinate.
+	 */
+	public void moveImage(int imageXPos, int imageYPos) {
+		this.imageXPos = imageXPos;
+		this.imageYPos = imageYPos;
+	}
+	
+}

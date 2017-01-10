@@ -1,0 +1,292 @@
+import java.util.Random;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+/**
+ * An exception that is thrown when a method attempts to create a variable outside of its bounds.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+class OutOfBoundsException extends Exception {
+	
+	// The bounds for the variable.
+	private int lowerBound;
+	private int upperBound;
+
+	
+	/**
+	 * A constructor which creates the exception with the give bounds.
+	 * @param lowerBound specifies the lowest valid number.
+	 * @param upperBound specifies the highest valid number.
+	 */
+	OutOfBoundsException (int lowerBound, int upperBound) {
+		this.lowerBound = lowerBound;
+		this.upperBound = upperBound;
+	}
+	
+	/**
+	 * Returns the error message based on the given bounds.
+	 * @return The error message.
+	 */
+	public String getMessage() {	
+		return String.format("The given value must be between %d and %d and therefore will not be assigned.", lowerBound, upperBound);		
+	}
+}
+
+
+/**
+ * An exception that is thrown when a method attempts to create a duplicate which is not allowed.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+class InUseException extends Exception {
+	/**
+	 * A constructor which creates the exception with the given message using the superclas's constructor.
+	 * @param message specifies the message representing the exception.
+	 */
+	InUseException (String message) {super(message);}
+}
+
+
+/**
+ * A class that represents a person by their name, age, and phone number.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/5/2017
+ */
+public class Person {
+
+	// The three indentifiers for the Person
+	private String name;
+	private int age;
+	private int phoneNumber;
+	
+	// The random number generator
+	private Random rng = new Random();
+	// A scanner
+	private Scanner s = new Scanner(System.in);
+	
+	// The image that will represent the person in the VisualCity.
+	private Image image;
+	// The positioning for the image in the VisualCity.
+	private int imageXPos=0, imageYPos=0;
+	// The size of the image
+	private int imageWidth, imageHeight;
+	
+	// An array that keeps track of what phoneNumbers are in use.
+	private static ArrayList<Integer> usedPhoneNumbers = new ArrayList<Integer>();
+	
+	
+	/**
+	 * The default constructor which creates a person named Bob with a random age and phone number
+	 */
+	Person() {
+		
+		// Set the name to "Bob"
+		name = "Bob";
+		
+		// Create a random phone number and age.
+		age = rng.nextInt(81) + 20;
+		phoneNumber = rng.nextInt(9000000) + 1000000;
+		
+		// Check to make sure the phone number is valid, generating new numbers if necessary until it is.
+		while (isNumberInUse(phoneNumber)) phoneNumber = rng.nextInt(9000000) + 1000000;
+		
+		// Finally, add the new phone number to the list of existing numbers and increment the number of people.
+		usedPhoneNumbers.add(phoneNumber);
+		
+	}
+	
+	/**
+	 * A constructor which takes a phone number, name, and age and creates a person based on those parameters.
+	 * @param phoneNumber specifies the phone number for the new person.
+	 * @param name specifies the name for the new person.
+	 * @param age specifies the age for the new person.
+	 */
+	Person (int phoneNumber, String name, int age) {
+		
+		// A boolean used to determine whether or not an instance variable has been properly set.
+		boolean validSet = false;
+		
+		// Set the given name.
+		this.name = name;
+		
+		// Attempt to set the phoneNumber.  If it is invalid, ask the user to input new numbers until it is valid.
+		while(!validSet) {
+			
+			// Assume the new value is valid until proven otherwise.
+			validSet = true;
+			
+			try {setPhoneNumber(phoneNumber);}
+			catch (Exception e) {
+				// Print out the error message, set validSet to false and request new input.
+				
+				System.out.printf("Error: %s\n", e.getMessage());
+				validSet = false;
+				
+				System.out.printf("Input a new phoneNumber for %s.", name);
+				phoneNumber = s.nextInt();
+			}
+			
+		}
+		
+		// Add the phone number to the list of used numbers, and increment the number of people.
+		usedPhoneNumbers.add(phoneNumber);
+		
+		// Reset validSet.
+		validSet = false;
+		
+		// Attempt to set the age.  If it is invalid, ask the user to input new ages until it is valid.
+		while(!validSet) {
+			
+			// Assume the new value is valid until proven otherwise.
+			validSet = true;
+			
+			try {setAge(age);}
+			catch (Exception e) {
+				// Print out the error message, set validSet to false and request new input.
+				
+				System.out.printf("Error: %s\n", e.getMessage());
+				validSet = false;
+				
+				System.out.printf("Input a new phoneNumber for %s.", name);
+				age = s.nextInt();
+			}
+			
+		}
+		
+		
+		
+	}
+	
+	
+	/**
+	 * A function which checks to make sure that the given phone number is not in use.
+	 * @param number specifies the phone number to be checked.
+	 * @return returns true if the number is in use, otherwise returns false.
+	 */
+	private boolean isNumberInUse(int number) {
+		
+		// Loop through the array of used phone numbers looking for matches
+		for (int n : usedPhoneNumbers) {
+			if (number == n) return true;
+		}
+		
+		return false;
+		
+	}
+	
+	// Getters and setters...
+	
+	/**
+	 * Gets the person's name
+	 * @return the person's name.
+	 */
+	public String getName() {return name;}
+	
+	/**
+	 * Gets the person's phone number
+	 * @return the person's phone number.
+	 */
+	public int getPhoneNumber() {return phoneNumber;}
+	
+	/**
+	 * Gets the person's age
+	 * @return the person's age.
+	 */
+	public int getAge() {return age;}
+	
+	/**
+	 * Sets a new name for the person.
+	 * @param name specifies the new name.
+	 */
+	public void setName(String name) {this.name = name;}
+	
+	/**
+	 * Sets a new phoneNumber for the person provided no exceptions are thrown.
+	 * @param phoneNumber specifies the new phone number.
+	 * @throws InUseException if the given phone number is already in use.
+	 * @throws OutOfBoundsException if the given phone number is too large or too small.
+	 */
+	public void setPhoneNumber(int phoneNumber) throws InUseException, OutOfBoundsException {
+		
+		// Check to see if the given phone number can be set.
+		// If it can, set it.  Otherwise, throw the corresponding exception.
+		if (isNumberInUse(phoneNumber)) throw new InUseException("The given phone number is already in use and will not be assigned.");
+		else if (phoneNumber < 1000000 || phoneNumber > 9999999) throw new OutOfBoundsException(1000000,9999999);
+		else {
+			this.phoneNumber = phoneNumber;
+		}
+		
+	}
+	
+	/**
+	 * Sets a new age for the person provided no exceptions are thrown.
+	 * @param age specifies the new age.
+	 * @throws OutOfBoundsException if the given phone number is too large or too small.
+	 */
+	public void setAge(int age) throws OutOfBoundsException {
+		
+		// Check to see if the given age is within valid bounds.
+		// If it is, set it.  Otherwise, throw an OutOfBoundsException.
+		if (age < 0 || age > 200) throw new OutOfBoundsException(0,200);
+		else this.age = age;
+		
+	}
+	
+	/**
+	 * Creates the person's image object with the given parameters.
+	 * @param fileLocation specifies the file location of the image
+	 * @param xSize specifies the width of the image.
+	 * @param ySize specifies the height of the image.
+	 */
+	public void createImage(String fileLocation, int xSize, int ySize) {
+		image = Toolkit.getDefaultToolkit().getImage(getClass().getResource(fileLocation));
+		image = image.getScaledInstance(xSize, ySize, Image.SCALE_SMOOTH);
+		imageWidth = xSize;
+		imageHeight = ySize;
+	}
+	
+	/**
+	 * Returns the person's image.
+	 * @return the person's image.
+	 */
+	public Image getImage() {return image;}
+	
+	/**
+	 * Returns the x position of the image of the person.
+	 * @return the x position of the person's image.
+	 */
+	public int getImageX() {return imageXPos;}
+	
+	/**
+	 * Returns the y position of the person's image.
+	 * @return the y position of the person's image.
+	 */
+	public int getImageY() {return imageYPos;}
+	
+	/**
+	 * Returns the width of the person's image.
+	 * @return the width of the person's image.
+	 */
+	public int getImageWidth() {return imageWidth;}
+	
+	/**
+	 * Returns the height of the person's image.
+	 * @return the height of the person's image.
+	 */
+	public int getImageHeight() {return imageHeight;}
+	
+	/**
+	 * Sets the image to a new position.
+	 * @param imageXPos specifies the new x coordinate.
+	 * @param imageYPos specifies the new y coordinate.
+	 */
+	public void moveImage(int imageXPos, int imageYPos) {
+		this.imageXPos = imageXPos;
+		this.imageYPos = imageYPos;
+	}
+	
+}

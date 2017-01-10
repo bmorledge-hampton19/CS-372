@@ -2,6 +2,9 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="Police.Role"/>
 <fullyQualifiedTypeName name="CityHall"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="javax.swing.JComponent"/>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.awt.Image"/>
 </qualifiedTypeNameHistroy>

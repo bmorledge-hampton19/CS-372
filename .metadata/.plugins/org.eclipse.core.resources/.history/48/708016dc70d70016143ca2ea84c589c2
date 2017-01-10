@@ -1,0 +1,15 @@
+import javax.swing.JFrame;
+
+public class VisualCityTest {
+
+	public static void main(String[] args) {
+		//Create the JFrame
+		JFrame frame = new JFrame();
+		frame.add(new VisualCity());
+		frame.setSize(600, 600);
+		
+		frame.setVisible(true);
+		
+	}
+
+}
