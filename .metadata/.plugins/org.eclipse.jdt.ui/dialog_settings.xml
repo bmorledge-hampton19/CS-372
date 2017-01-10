@@ -21,12 +21,12 @@
 		<item value="true" key="splitindex"/>
 		<item value="true" key="fromStandard"/>
 		<item value="false" key="notree"/>
-		<item value="C:\Users\Benjamin\Source\Repos\CS-372\Homework 2\doc" key="destdir"/>
+		<item value="C:\Users\Benjamin\Source\Repos\CS-372\Homework 2 &amp; 3\doc" key="destdir"/>
 		<item value="false" key="openinbrowser"/>
 		<section name="projects">
 			<section name="Homework 2 &amp; 3">
 				<item value="C:\Users\Benjamin\Source\Repos\CS-372\Homework 2 &amp; 3\javadoc.xml" key="antpath"/>
-				<item value="C:\Users\Benjamin\Source\Repos\CS-372\Homework 2\doc" key="destdir"/>
+				<item value="C:\Users\Benjamin\Source\Repos\CS-372\Homework 2 &amp; 3\doc" key="destdir"/>
 				<item value="" key="href"/>
 			</section>
 			<section name="Homework 1">

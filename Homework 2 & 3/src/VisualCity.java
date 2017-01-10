@@ -228,7 +228,9 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 		}
 	}
 	
-	@Override
+	/**
+	 * Set up the clicked object to display info.
+	 */
 	public void mouseClicked(MouseEvent e) {
 		
 		// See if the mouse is within the bounds of an object so that its info can be displayed.
@@ -256,7 +258,9 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 	@Override
 	public void mouseExited(MouseEvent e) {}
 
-	@Override
+	/**
+	 * Look to see if there's an object to grab, moving it to "moving" to grab it.
+	 */
 	public void mousePressed(MouseEvent e) {
 		
 		// First determine if the mouse coordinates are within the bounds of one of the people.
@@ -273,7 +277,9 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 		
 	}
 
-	@Override
+	/**
+	 * If an image was being held, figure out what to do with it!
+	 */
 	public void mouseReleased(MouseEvent e) {
 		
 		// See if something was being moved.
@@ -368,7 +374,9 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 		
 	}
 
-	@Override
+	/**
+	 * Moves the "moving" image around based on the mouse's location.
+	 */
 	public void mouseDragged(MouseEvent e) {
 		
 		// If a person is being moved, update its position.
