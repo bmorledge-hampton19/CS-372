@@ -1,0 +1,29 @@
+
+public class Square implements Shape {
+
+	private int ID;
+	private int sideLength;
+	private String color;
+	
+	Square(int ID, int sideLength, String color) {
+		this.ID = ID;
+		this.sideLength = sideLength;
+		this.color = color;
+	}
+	
+	@Override
+	public String getKind() {
+		
+	}
+
+	@Override
+	public String getDetailString() {
+		
+	}
+
+	@Override
+	public int getID() {
+		
+	}
+
+}

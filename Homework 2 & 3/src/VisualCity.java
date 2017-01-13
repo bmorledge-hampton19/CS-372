@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.*;
 
@@ -22,6 +23,8 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 	
 	// Keeps track of how many citizens do not belong to any building.
 	int freeCitizens = 0;
+	
+	Scanner s = new Scanner(System.in);
 	
 	/**
 	 * A simple constructor which takes a city object to be represented.
@@ -248,6 +251,20 @@ public class VisualCity extends JComponent implements MouseMotionListener, Mouse
 				displayingInfo = b;
 				repaint();
 			}
+		}
+		
+		// Secrets
+		if (rectangleContainsPoint(e.getX(),e.getY(),0,0,100,100)) {
+			System.out.print("Enter an Employee ID: ");
+			String input = s.next();
+			String searchResult;
+			if (city.getEmployeeByID(input)!=null) {
+				searchResult = ((Person)city.getEmployeeByID(input)).getName();
+			} 
+			else {
+				searchResult = "Nobody...";
+			}
+			System.out.printf("That ID matches: %s.\n", searchResult);
 		}
 			
 	}

@@ -1,0 +1,18 @@
+import java.util.ArrayList;
+
+public class ShapeFactory {
+	
+	public static ArrayList<Shape> getShapesFromText(String filename) {
+		
+		ArrayList<Shape> shapes = new ArrayList<Shape>();
+		
+		
+		
+		
+		return shapes;
+		
+	}
+	
+	ShapeFactory() {}
+	
+}

@@ -1,0 +1,25 @@
+import java.io.*;
+import java.util.ArrayList;
+
+public class ShapeFactory {
+	
+	public static ArrayList<Shape> getShapesFromText(String fileLocation) {
+		
+		ArrayList<Shape> shapes = new ArrayList<Shape>();
+		
+		try (FileInputStream is = new FileInputStream(fileLocation)) {
+			InputStreamReader ir = new InputStreamReader(is);
+			
+		}
+		catch (Exception ex) {
+			System.out.printf("Error: ");
+			ex.printStackTrace();
+		}
+		
+		return shapes;
+		
+	}
+	
+	ShapeFactory() {}
+	
+}

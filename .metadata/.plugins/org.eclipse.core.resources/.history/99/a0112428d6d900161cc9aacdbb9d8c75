@@ -1,0 +1,38 @@
+
+public class Circle implements Shape {
+
+	private int radius;
+	private int ID;
+	private String color;
+	
+	Circle(int ID, int radius, String color) {
+		this.ID = ID;
+		this.radius = radius;
+		this.color = color;
+	}
+
+	public double getCircumference() {
+		return (3.1415926 * radius * 2);
+	}
+	
+	public String toString() {
+		return String.format("Circle (ID# %d)",ID);
+	}
+
+	public String getKind() {
+		return "Circle";
+	}
+
+	public String getDetailString() {
+		String detailString = toString() + "\n";
+		detailString += "Color"
+	}
+
+	public int getID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
+	
+}

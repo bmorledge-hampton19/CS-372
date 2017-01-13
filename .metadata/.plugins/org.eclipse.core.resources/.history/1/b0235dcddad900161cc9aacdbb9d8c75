@@ -1,0 +1,63 @@
+import java.io.*;
+import java.util.ArrayList;
+
+public class ShapeFactory {
+	
+	public static ArrayList<Shape> getShapesFromText(String fileLocation) {
+		
+		ArrayList<Shape> shapes = new ArrayList<Shape>();
+		
+		try (FileInputStream is = new FileInputStream(fileLocation)) {
+			InputStreamReader ir = new InputStreamReader(is);
+			BufferedReader rdr = new BufferedReader(ir);
+			
+			String line = rdr.readLine();
+			
+			while (line.length() > 0 && line != null) {
+				
+				String[] pieces = line.split(" ");
+				
+				if (pieces[0] == "circle:") {
+					
+					shapes.add(new Circle(Integer.parseInt(pieces[1]), 
+							Integer.parseInt(pieces[2]), 
+							pieces[3]));
+					
+				} else if (pieces[0] == "square:") {
+					
+					shapes.add(new Square(Integer.parseInt(pieces[1]), 
+							Integer.parseInt(pieces[2]), 
+							pieces[3]));
+					
+				} else if (pieces[0] == "rectangle") {
+					
+					shapes.add(new Rectangle(Integer.parseInt(pieces[1]), 
+							Integer.parseInt(pieces[2]), 
+							Integer.parseInt(pieces[3]),
+							pieces[4]));
+					
+				} else if (pieces[0] == "triangle") {
+					
+					shapes.add(new Triangle(Integer.parseInt(pieces[1]), 
+							Integer.parseInt(pieces[2]), 
+							Integer.parseInt(pieces[3]),
+							Integer.parseInt(pieces[4]),
+							pieces[5]));
+					
+				} else System.out.printf("Wat dis be? %s\n", pieces[0]);
+				
+			}
+			
+		}
+		catch (Exception ex) {
+			System.out.printf("Error: ");
+			ex.printStackTrace();
+		}
+		
+		return shapes;
+		
+	}
+	
+	ShapeFactory() {}
+	
+}

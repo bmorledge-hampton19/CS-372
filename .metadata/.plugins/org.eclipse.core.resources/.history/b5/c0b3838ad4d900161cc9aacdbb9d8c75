@@ -1,0 +1,14 @@
+
+public class Circle {
+
+	private int radius;
+	private int ID;
+	private String color;
+	
+	Circle(int ID, int radius, String color) {
+		this.ID = ID;
+		this.radius = radius;
+		this.color = color;
+	}
+	
+}

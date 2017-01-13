@@ -1,0 +1,402 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.*;
+
+/**
+ * This class allows the user to interact with a visual representation of a city.
+ * @author Benjamin
+ * @version 1.0 1/9/2017
+ */
+public class VisualCity extends JComponent implements MouseMotionListener, MouseListener {
+	
+	// Declare the city that will be represented.
+	City city;
+	
+	// The person that is currently being moved by the mouse.
+	Person moving = null;
+	// The person or building whose information is currently being displayed to the screen.
+	Object displayingInfo = null;
+	
+	// Keeps track of how many citizens do not belong to any building.
+	int freeCitizens = 0;
+	
+	Scanner s = new Scanner(System.in);
+	
+	/**
+	 * A simple constructor which takes a city object to be represented.
+	 * @param city specifies the city to be represented.
+	 */
+	VisualCity(City city) {
+		this.city = city;
+		addMouseMotionListener(this);
+		addMouseListener(this);
+		init();
+	}
+	
+	/**
+	 * Initializes the VisualCity by determining where citizens belong in the visual based on whether or not they are in a building.
+	 */
+	public void init() {
+		
+		// Run an initial update for all citizens.
+		
+		for (Building b : city.getBuildings()) {
+			updateOccupantImages(b);
+		}
+	
+		updateVagabondImages();
+		
+		// Repaint!
+		repaint();
+		
+	}
+	
+	/**
+	 * Paints all of the images in the images array list.
+	 * @param g specifies the graphics object that draws stuff.
+	 */
+	public void paint(Graphics g) {
+		
+		Graphics2D g2 = (Graphics2D)g;
+
+		g2.drawString("Welcome to Ye Ol Town!", 235, 20);
+		
+		// Run a for loop to draw all of the images assigned to buildings.
+		for (Building b : city.getBuildings()) {
+			g2.drawImage(b.getImage(), b.getImageX(), b.getImageY(), this);
+		}
+		
+		// Run a for loop to draw all of the images assigned to people.
+		for (Person p : city.getCitizens()) {
+			g2.drawImage(p.getImage(), p.getImageX(), p.getImageY(), this);
+		}
+		
+		// Display info if the user has selected anything.
+		if (displayingInfo != null) displayInfo(g2);
+		
+	}
+	
+	/**
+	 * Determine if a point is contained by a rectangle or not.
+	 * @param pointX specifies the x-coordinate of the point.
+	 * @param pointY specifies the y-coordinate of the point.
+	 * @param rectX specifies the x-coordinate of the upper-left vertex of the rectangle.
+	 * @param rectY specifies the y-coordinate of the upper-left vertex of the rectangle.
+	 * @param rectWidth specifies the width of the rectangle.
+	 * @param rectHeight specifies the height of the rectangle.
+	 * @return Whether or not the point is enclosed by the rectangle.
+	 */
+	public static boolean rectangleContainsPoint(int pointX, int pointY, int rectX, int rectY, int rectWidth, int rectHeight) {
+		return (pointX > rectX && pointX < rectX + rectWidth &&
+				pointY > rectY && pointY < rectY + rectHeight);
+	}
+	
+	/**
+	 * Ensures that all of the images of people beneath buildings are formatted correctly.
+	 * @param b specifies the building to be updated.
+	 */
+	private void updateOccupantImages(Building b) {
+		// Check first to see whether the building is a School or a City Hall.
+		if (b instanceof School) {
+			
+			// Put the students and teachers beneath the school in rows of two.
+			
+			for (int i = 0; i < ((School) b).getNumberOfStudents(); i++) {
+				((School) b).getStudent(i).moveImage(b.getImageX() + 50*(i%2), b.getImageY() + b.getImageHeight() + 50*(i/2));
+			}
+			
+			for (int i = 0; i < ((School) b).getNumberOfTeachers(); i++) {
+				((School) b).getTeacher(i).moveImage(b.getImageX() + 50*( (i+ ((School)b).getNumberOfStudents() ) %2), 
+													 b.getImageY() + b.getImageHeight() + 50*( (i+ ((School)b).getNumberOfStudents() ) /2));
+			}
+			
+		}
+		else {
+			
+			// Put the police officers beneath the City Hall in rows of two.
+			for (int i = 0; i < ((CityHall)b).getNumberOfOfficers(); i++) {
+				((CityHall) b).getOfficer(i).moveImage(b.getImageX() + 50*(i%2), b.getImageY() + b.getImageHeight() + 50*(i/2));
+			}
+			
+		}
+		
+		// Repaint
+		repaint();
+		
+	}
+	
+	/**
+	 * Ensures that all of the images of people without buildings are formatted correctly.
+	 */
+	private void updateVagabondImages() {
+		
+		// Used to keep track of the spacing between vagabonds.
+		int vagabondCount = 0;
+		
+		// Search through the city's citizens for the "vagabonds"
+		for (Person p : city.getCitizens()) {
+			if (p.getBuilding() == null) {
+				
+				// Place each vagabond in front of the previous one all in one row on the bottom.
+				p.moveImage(100*vagabondCount, 500);
+				
+				// Increment the count.
+				vagabondCount++;
+				
+			}
+		}
+		
+		// Repaint
+		repaint();
+		
+	}
+	
+	/**
+	 * Display info on the currently selected object in the city.
+	 * @param g specifies the graphics object that will output the info.
+	 */
+	private void displayInfo(Graphics g) {
+		
+		// First, determine what type of object is selected.
+		if (displayingInfo instanceof Person) {
+			
+			// Create a temporary person to mitigate type casting.
+			Person p = (Person)displayingInfo;
+			
+			// Print out generic Person stats.
+			g.drawString(String.format("Name: %s", p.getName()), 0, 600);
+			g.drawString(String.format("Age: %d", p.getAge()), 150, 600);
+			g.drawString(String.format("Phone Number: %d", p.getPhoneNumber()), 250, 600);		
+			if (p.getBuilding() != null) g.drawString(String.format("Building: %s", p.getBuilding().getName()), 450, 600);
+			
+			// Print out stats specific to each type of Person.
+			if (displayingInfo instanceof Police) {
+				g.drawString(String.format("Role: %s", ((Police)p).getRole().toString()), 0, 650);
+			}
+			else if (displayingInfo instanceof Kid) {
+				g.drawString(String.format("Favorite Candy: %s", ((Kid)p).getFavoriteCandy()), 0, 650);
+			}
+			else if (displayingInfo instanceof Teacher) {
+				g.drawString(String.format("Grade Level: %d", ((Teacher)p).getGrade()), 0, 650);
+				g.drawString(String.format("Certification: %s", ((Teacher)p).getCertification()), 100, 650);
+			}
+		}
+		
+		else if (displayingInfo instanceof Building) {
+			
+			// Create a temporary building to mitigate type casting.
+			Building b = (Building)displayingInfo;
+			
+			// Print out generic Building stats.
+			g.drawString(String.format("Name: %s", b.getName()), 0, 600);
+			g.drawString(String.format("Address: %s", b.getAddress()), 225, 600);
+			
+			// Print out the stats specific to each type of Building
+			if (displayingInfo instanceof CityHall) {
+				
+				// Create a temporary City Hall to mitigate type casting.
+				CityHall c = (CityHall)displayingInfo;
+				
+				g.drawString(String.format("# of Police: %d", c.getNumberOfOfficers()), 450, 600);
+				
+				g.drawString("Police: ", 0, 625);
+				for (int i = 0; i < c.getNumberOfOfficers(); i++) {
+					g.drawString(String.format("%s", c.getOfficer(i).getName()), i*100+100, 625);
+				}
+		
+			}
+			else if (displayingInfo instanceof School) {
+				
+				// Create a temporary School to mitigate type casting.
+				School s = (School)displayingInfo;
+				
+				g.drawString(String.format("# of Teachers: %d", s.getNumberOfTeachers()), 450, 600);
+				g.drawString(String.format("# of Students: %d", s.getNumberOfStudents()), 575, 600);
+				
+				g.drawString("Teachers: ", 0, 625);
+				for (int i = 0; i < s.getNumberOfTeachers(); i++) {
+					g.drawString(String.format("%s", s.getTeacher(i).getName()), i*100+100, 625);
+				}
+				
+				g.drawString("Students: ", 0, 650);
+				for (int i = 0; i < s.getNumberOfStudents(); i++) {
+					g.drawString(String.format("%s", s.getStudent(i).getName()), i*100+100, 650);
+				}
+				
+			}
+		}
+	}
+	
+	/**
+	 * Set up the clicked object to display info.
+	 */
+	public void mouseClicked(MouseEvent e) {
+		
+		// See if the mouse is within the bounds of an object so that its info can be displayed.
+		
+		// First See if the mouse coordinates are within the bounds of one of the people.
+		for (Person p : city.getCitizens()) {			
+			if (rectangleContainsPoint(e.getX(),e.getY(),p.getImageX(),p.getImageY(),p.getImageWidth(),p.getImageHeight())) {
+				displayingInfo = p;
+			}
+		}
+		
+		// Next, check the buildings.
+		for (Building b : city.getBuildings()) {
+			if (rectangleContainsPoint(e.getX(),e.getY(),b.getImageX(),b.getImageY(),b.getImageWidth(),b.getImageHeight())) {
+				displayingInfo = b;
+				repaint();
+			}
+		}
+		
+		// Secrets
+		if (rectangleContainsPoint(e.getX(),e.getY(),0,0,10,10)) {
+			System.out.println("Enter an Employee ID:");
+			
+		}
+			
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	/**
+	 * Look to see if there's an object to grab, moving it to "moving" to grab it.
+	 */
+	public void mousePressed(MouseEvent e) {
+		
+		// First determine if the mouse coordinates are within the bounds of one of the people.
+		for (Person p : city.getCitizens()) {
+			
+				if (rectangleContainsPoint(e.getX(),e.getY(),p.getImageX(),p.getImageY(),p.getImageWidth(),p.getImageHeight())) {
+					
+					// If a match is found, start moving that object with the mouse.
+					moving = p;
+					
+				}
+
+		}
+		
+	}
+
+	/**
+	 * If an image was being held, figure out what to do with it!
+	 */
+	public void mouseReleased(MouseEvent e) {
+		
+		// See if something was being moved.
+		if (moving != null) {
+			
+			// Keeps track of whether or not the person has been placed in a building.
+			boolean hasBeenPlaced = false;
+			
+			// Keep track of the citizen's previous building so it can be updated.
+			Building reorganizeThis = moving.getBuilding();
+			
+			// Next, figure out what kind of person is being moved.
+			// Police can only be in City Hall, and the rest can only be in School.
+			if (moving instanceof Police) {
+				
+				// Now, figure out if the person is being released over a valid building.
+				for (Building b : city.getBuildings()) {
+					if (b instanceof CityHall) {
+						if (rectangleContainsPoint(e.getX(),e.getY(),b.getImageX(),b.getImageY(),b.getImageWidth(),b.getImageHeight()+100)) {
+							
+							// Record that a valid building has been found.
+							hasBeenPlaced = true;
+							
+							// Make sure that this building does not already contain the citizen.
+							if (b!=moving.getBuilding()) {
+								// Remove the citizen from the building and reassign them to the new one.
+								city.removeFromBuilding(moving);
+								
+								((CityHall) b).addOfficer((Police)moving);
+								moving.assignBuilding(b);
+								
+								// Update the building involved.
+								updateOccupantImages(b);
+							}
+							
+						}
+					}
+				}
+				
+				// If the citizen was not released over a valid building, make them a vagabond!
+				if (!hasBeenPlaced) city.removeFromBuilding(moving);					
+				
+			}
+			else {
+				
+				// Now, figure out if the person is being released over a valid building.
+				for (Building b : city.getBuildings()) {
+					if (b instanceof School) {
+						if (rectangleContainsPoint(e.getX(),e.getY(),b.getImageX(),b.getImageY(),b.getImageWidth(),b.getImageHeight()+100)) {
+							
+							// Record that a valid building has been found.
+							hasBeenPlaced = true;
+							
+							// Make sure that this building does not already contain the citizen.
+							if (b!=moving.getBuilding()) {
+								// Remove the citizen from the building and reassign them to the new one.
+								city.removeFromBuilding(moving);
+								
+								if (moving instanceof Teacher) {
+									((School) b).addTeacher((Teacher)moving);
+									moving.assignBuilding(b);
+								}
+								
+								if (moving instanceof Kid) {
+									((School) b).addStudent((Kid)moving);
+									moving.assignBuilding(b);
+								}
+								
+								// Update the building involved.
+								updateOccupantImages(b);
+							}
+							
+						}
+					}
+				}
+				
+				// If the citizen was not released over a valid building, make them a vagabond!
+				if (!hasBeenPlaced) city.removeFromBuilding(moving);
+				
+			}
+			
+			// Update the citizen's previous building, if they had one.
+			if (reorganizeThis != null) updateOccupantImages(reorganizeThis);
+			
+			// Update the vagabonds.
+			updateVagabondImages();
+			
+			// Reset moving to null.
+			moving = null;
+			
+		}
+		
+	}
+
+	/**
+	 * Moves the "moving" image around based on the mouse's location.
+	 */
+	public void mouseDragged(MouseEvent e) {
+		
+		// If a person is being moved, update its position.
+		if (moving != null) moving.moveImage(e.getX(), e.getY());
+		
+		// Repaint!
+		repaint();
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {}
+
+}

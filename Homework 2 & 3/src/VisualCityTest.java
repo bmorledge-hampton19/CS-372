@@ -26,16 +26,20 @@ public class VisualCityTest {
 		kid2.createImage("res/Kid2.jpg",50,50);
 		
 		Police officer1 = new Police("Randy", 35, 8372946, Police.Role.CAPTAIN);
-		officer1.createImage("res/Officer1.png",50,50);		
+		officer1.createImage("res/Officer1.png",50,50);	
+		officer1.setEmployeeID("1000A");
 		
 		Police officer2 = new Police("Gerald", 50, 3826393, Police.Role.CHIEF);
-		officer2.createImage("res/Officer2.png",50,50);		
+		officer2.createImage("res/Officer2.png",50,50);	
+		officer2.setEmployeeID("2000B");
 		
 		Teacher teacher1 = new Teacher("Corina", 19, 8372963, 2, "Masters");
 		teacher1.createImage("res/Teacher1.jpg",50,50);		
+		teacher1.setEmployeeID("1000B");
 		
 		Teacher teacher2 = new Teacher("Mr. Caekart", 62, 4067839, 12, "Baechelor's");
 		teacher2.createImage("res/Teacher2.png",50,50);
+		teacher2.setEmployeeID("2000B");
 		
 		
 		// Add things to other things.
@@ -64,26 +68,3 @@ public class VisualCityTest {
 	}
 
 }
-
-/*
-
-imageXPos.add(250);
-imageXPos.add(100);
-imageXPos.add(400);
-imageXPos.add(100);
-imageXPos.add(200);
-imageXPos.add(300);
-imageXPos.add(400);
-imageXPos.add(500);
-imageXPos.add(600);
-
-imageYPos.add(100);
-imageYPos.add(100);
-imageYPos.add(100);
-imageYPos.add(500);
-imageYPos.add(500);
-imageYPos.add(500);
-imageYPos.add(500);
-imageYPos.add(500);
-imageYPos.add(500);
-*/

@@ -1,0 +1,169 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+/**
+ * A class which contains a bunch of buildings and people and can do a variety of tasks with them.
+ * @author Benjamin
+ * @version 1.0 1/6/2017
+ */
+public class City {
+
+	// Array lists for citizens and buildings in the city.
+	private ArrayList<Building> buildings = new ArrayList<Building>();
+	private ArrayList<Person> citizens = new ArrayList<Person>();
+	
+	private static Map<String,Employee> employees = new HashMap<String,Employee>();
+	
+	/**
+	 * The default (and only) constructor 
+	 */
+	City() {}
+	
+	/**
+	 * Adds a given building to the buildings array list.
+	 * @param b specifies the building to be added.
+	 */
+	public void addBuilding(Building b) {
+		buildings.add(b);
+	}
+	
+	/**
+	 * Adds a given person to the citizens array list.
+	 * @param p specifies the person to be added.
+	 */
+	public void addCitizen(Person p) {
+		citizens.add(p);
+		if (p instanceof Employee) employees.put(((Employee) p).getEmployeeID(), (Employee)p);
+	}
+	
+	/**
+	 * Prints the names of all of the citizens to the console.
+	 */
+	public void displayCitizens() {
+		System.out.println("Citizens:\n");
+		
+		for (Person p : citizens) {
+			System.out.printf("%s\n", p.getName());
+		}
+	}
+	
+	/**
+	 * Returns the ArrayList of Citizens.
+	 * @return the ArrayList of Citizens.
+	 */
+	public ArrayList<Person> getCitizens() {return citizens;}
+	
+	/**
+	 * Returns the ArrayList of buildings.
+	 * @return the ArrayList of buildings.
+	 */
+	public ArrayList<Building> getBuildings() {return buildings;}
+	
+	/**
+	 * Prints the names of all of the buildings to the console.
+	 */
+	public void displayBuildings() {
+		System.out.println("Buildings:\n");
+		
+		for (Building b : buildings) {
+			System.out.printf("%s\n", b.getName());
+		}
+	}
+
+	/**
+	 * Pay all of the employees in the city.
+	 */
+	public void payEmployees() {
+		
+		for (Person p : citizens) {
+			// Only pay the citizen if they are an instance of the employee interface.
+			if (p instanceof Employee) {
+				((Employee) p).payEmployee();
+			}
+		}
+		
+	}
+	
+	/**
+	 * A function to check if a person is in school.
+	 * @param p specifies the person to be checked for.
+	 * @return returns true if the person is in school.  Otherwise it returns false.
+	 */
+	public boolean isInSchool(Person p) {
+		
+		// Make sure the given person is either a kid or teacher
+		if (p instanceof Kid || p instanceof Teacher) {
+			
+			// Run a loop for all of the schools, checking for citizen and returning true if they are found.
+			for (Building b : buildings) {
+				if (b instanceof School) {
+					
+					// Check all of the teachers in the school.
+					for (int i = 0; i < ((School)b).getNumberOfTeachers(); i++) {
+						if (p == ((School)b).getTeacher(i)) return true;	
+					}
+					
+					// Check all of the students in the school.
+					for (int i = 0; i < ((School)b).getNumberOfStudents(); i++) {
+						if (p == ((School)b).getStudent(i)) return true;
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		return false;
+		
+	}
+	
+	/**
+	 * A function to check if a person is at City Hall.
+	 * @param p specifies the person to be checked for.
+	 * @return returns true if the person is at City Hall.  Otherwise it returns false.
+	 */
+	public boolean isAtCityHall(Person p) {
+		
+		// Make sure the given person is a police officer
+		if (p instanceof Police) {
+			
+			// Run a loop for all of the schools, checking for citizen and returning true if they are found.
+			for (Building b : buildings) {
+				if (b instanceof CityHall) {
+					
+					// Check all of the officers in city hall.
+					for (int i = 0; i < ((CityHall)b).getNumberOfOfficers(); i++) {
+						if (p == ((CityHall)b).getOfficer(i)) return true;	
+					}
+					
+				}
+			}
+		
+		}
+		
+		return false;
+			
+	}
+
+	/**
+	 * Removes a person from any building they were in.
+	 * @param p specifies the person to be removed.
+	 */
+	public void removeFromBuilding(Person p) {
+		
+		// First, see if the removal is even necessary.
+		if (p.getBuilding() != null) {
+			// Determine the type of person being removed and remove them from their corresponding building.
+			if (p instanceof Kid) ((School)(p.getBuilding())).removeStudent((Kid)p);
+			
+			else if (p instanceof Teacher) ((School)(p.getBuilding())).removeTeacher((Teacher)p);
+			
+			else ((CityHall)(p.getBuilding())).removeOfficer((Police)p);
+		
+			//Set the Person's assigned building to null.
+			p.assignBuilding(null);
+		}
+	}
+	
+}

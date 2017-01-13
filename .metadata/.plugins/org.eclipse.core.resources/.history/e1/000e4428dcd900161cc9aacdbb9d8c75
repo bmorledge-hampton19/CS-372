@@ -1,0 +1,9 @@
+
+public class ShapeViewer {
+
+	private Image circleImage;
+	private Image squareImage;
+	private Image rectangleImage;
+	private Image triangleImage;
+	
+}
