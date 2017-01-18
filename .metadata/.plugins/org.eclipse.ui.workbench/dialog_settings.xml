@@ -26,6 +26,10 @@
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID"/>
 		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_OVERWRITE_EXISTING_RESOURCES_ID"/>
 		<list key="WizardFileSystemResourceImportPage1.STORE_SOURCE_NAMES_ID">
+			<item value="C:\Users\Benjamin\Source\Repos\CS-372\Exam"/>
+			<item value="C:\Users\Benjamin\Source\Repos\A-Light-in-the-Void\src\myExternalClasses"/>
+			<item value="C:\Users\Benjamin\Source\Repos\A-Light-in-the-Void\bin\myExternalClasses"/>
+			<item value="D:\Downloads"/>
 			<item value="C:\Users\Benjamin\Source\Repos\CS-372\Homework 2 &amp; 3\res"/>
 		</list>
 	</section>

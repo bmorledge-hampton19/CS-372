@@ -1,0 +1,109 @@
+import java.io.*;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.*;
+
+/**
+ * A class which takes a URL and searches the corresponding page for more URL's 
+ * which are searched in turn until 100 URL's have been found.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/18/2017
+ */
+public class WebSpider {
+
+	// A hashmap to contain all of the URL's found and keep track of whether or not they have been visited.
+	Map<String, Boolean> sites;
+	
+	// Holds the next URL to be searched.
+	URL url;
+	
+	/**
+	 * A constructor which initializes the WebSpider with the Whitworth home page.
+	 */
+	WebSpider() {
+		
+		// Initialize the hashmap.
+		sites = new HashMap<String, Boolean>();
+		
+		// Initialize the starting URL as the Whitworth home page.
+		try {
+			url = new URL("http://www.whitworth.edu/cms");
+			sites.put("http://www.whitworth.edu/cms", false);
+			System.out.printf("%d: %s\n",1,url.toString());
+		}
+		catch (Exception ex){
+			System.out.printf("Error: %s\n", ex.getMessage());
+		}
+		
+	}
+	
+	/**
+	 * Crawl around on the web until 100 URL's are found!
+	 */
+	public void crawl() {
+		
+		// Go until 100 sites have been found.
+		while (sites.size() < 100) {
+		
+			// Find the next URL to search.
+			for (String s : sites.keySet()) {
+				if (!sites.get(s)) {
+					try {
+						url = new URL(s);
+					} catch (Exception ex) {
+						System.out.printf("Error: %s\n", ex.getMessage());
+					}
+					break;
+				}
+			}
+			
+			// Search the next URL!
+			try {
+				
+				// Declare that the URL is being searched, and switch its boolean value in the hashmap.
+				System.out.printf("%s is about to be searched.\n", url.toString());
+				sites.put(url.toString(), true);
+				
+				// Open the URL in a Buffered Reader.
+				BufferedReader rdr = new BufferedReader(new InputStreamReader(url.openStream()));
+				
+				String line;
+				
+				// Read in new URL's until the end of the HTML or the 100th site is reached.
+				while ((line = rdr.readLine()) != null && sites.size() < 100) {
+					
+					// Search for the pattern that represents an accessible URL
+					Pattern html = Pattern.compile("<a.*?href=\"(http:.*?)\"");
+					Matcher matcher = html.matcher(line);
+					
+					// When that pattern is found, make sure the resulting URL is not already in the hashmap.
+					if (matcher.find() && sites.get(matcher.group(1)) == null) {
+						
+						// Add the URL to the hashmap.
+						System.out.printf("%d: %s\n",sites.size()+1,matcher.group(1));
+						sites.put(matcher.group(1), false);
+						
+					}
+					
+				}
+				
+			}
+			catch (Exception ex){
+				System.out.printf("Error: %s\n", ex.getMessage());
+			}
+		
+		}
+			
+	}
+	
+	/**
+	 * The main function which initializes the spider, has it crawl, and then lets the user know it is done.
+	 * @param args specifies the arguments that can be passed to the function on startup.
+	 */
+	public static void main(String[] args) {
+		WebSpider spiderMan = new WebSpider();
+		spiderMan.crawl();
+		System.out.println("Done!");
+	}
+	
+}

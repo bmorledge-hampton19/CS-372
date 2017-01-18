@@ -1,0 +1,94 @@
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.*;
+
+/**
+ * 
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/18/2017
+ */
+public class Yahtzee extends JComponent implements ActionListener{
+
+	// The images of the 6 die faces.
+	static ArrayList<Image> dice;
+	
+	// The labels for the dice to be displayed on.
+	private JLabel[] labels;
+	
+	// The threads to roll the dice.
+	private DiceRoll[] threads;
+	
+	// The frame and button necessary to display and roll the dice.
+	private JFrame frame;
+	private JButton roll;
+	
+	Yahtzee() {init();}
+	
+	private void init() {
+		
+		frame = new JFrame();
+		frame.setSize (1000,1000);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new FlowLayout());
+		setLayout(new FlowLayout());
+		
+		frame.add(this);
+		
+		dice = new ArrayList<Image>();
+		
+		dice.add(loadImage("resource/1 Die.png", 100, 100));
+		dice.add(loadImage("resource/2 Die.png", 100, 100));
+		dice.add(loadImage("resource/3 Die.png", 100, 100));
+		dice.add(loadImage("resource/4 Die.png", 100, 100));
+		dice.add(loadImage("resource/5 Die.png", 100, 100));
+		dice.add(loadImage("resource/6 Die.png", 100, 100));
+		
+		labels = new JLabel[5];
+		threads = new DiceRoll[5];
+		
+		for (int i = 0; i < 5; i++) {
+			labels[i] = new JLabel();
+			threads[i] = new DiceRoll(labels[i]);
+			add(labels[i]);
+		}
+		
+		roll = new JButton("Roll");
+		roll.addActionListener(this);
+		add(roll);
+		
+		frame.setVisible(true);
+		
+	}
+	
+	private void roll() {
+		
+		System.out.println("We're Rolling!");
+		
+		for (int i = 0; i < 5; i++) {
+			Thread t = new Thread(threads[i]);
+			t.start();
+		}
+		
+	}
+
+	private Image loadImage(String fileLocation, int width, int height) {
+		Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource(fileLocation));
+		image = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		return image;
+	}
+	
+	public static void main(String[] args) {
+		Yahtzee y = new Yahtzee();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == roll) roll();
+	}
+	
+}

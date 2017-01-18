@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class ShapeViewer extends JComponent implements MouseListener, ActionListener {
 
 	private int shapeViewing = 0;

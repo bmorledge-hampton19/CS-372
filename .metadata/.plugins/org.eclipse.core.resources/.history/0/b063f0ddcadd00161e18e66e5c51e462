@@ -1,0 +1,93 @@
+import java.io.*;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.*;
+
+/**
+ * A class which takes a URL and searches the corresponding page for more URL's 
+ * which are searched in turn until 100 URL's have been found.
+ * @author Benjamin Morledge-Hampton
+ * @version 1.0 1/18/2017
+ */
+public class WebSpider {
+
+	// A hashmap to contain all of the URL's found and keep track of whether or not they have been visited.
+	Map<String, Boolean> sites;
+	
+	// Holds the next URL to be searched.
+	URL url;
+	
+	/**
+	 * A constructor which initializes the WebSpider with the Whitworth home page.
+	 */
+	WebSpider() {
+		
+		// Initialize the hashmap.
+		sites = new HashMap<String, Boolean>();
+		
+		// Initialize the starting URL as the Whitworth home page.
+		try {
+			url = new URL("http://www.whitworth.edu/cms");
+			sites.put("http://www.whitworth.edu/cms", true);
+			System.out.printf("%d: %s\n",1,url.toString());
+		}
+		catch (Exception ex){
+			System.out.printf("Error: %s\n", ex.getMessage());
+		}
+		
+	}
+	
+	public void crawl() {
+		
+		while (sites.size() < 100) {
+		
+			for (String s : sites.keySet()) {
+				if (!sites.get(s)) {
+					try {
+						url = new URL(s);
+					} catch (Exception ex) {
+						System.out.printf("Error: %s\n", ex.getMessage());
+					}
+					break;
+				}
+			}
+			
+			try {
+				
+				System.out.printf("%s is about to be searched.\n", url.toString());
+				sites.put(url.toString(), true);
+				
+				BufferedReader rdr = new BufferedReader(new InputStreamReader(url.openStream()));
+				
+				String line;
+				
+				while ((line = rdr.readLine()) != null && sites.size() < 100) {
+					
+					Pattern html = Pattern.compile("<a.*?href=\"(http:.*?)\"");
+					Matcher matcher = html.matcher(line);
+					
+					if (matcher.find() && sites.get(matcher.group(1)) == null) {
+						
+						System.out.printf("%d: %s\n",sites.size()+1,matcher.group(1));
+						sites.put(matcher.group(1), false);
+						
+					}
+					
+				}
+				
+			}
+			catch (Exception ex){
+				System.out.printf("Error: %s\n", ex.getMessage());
+			}
+		
+		}
+			
+	}
+	
+	public static void main(String[] args) {
+		WebSpider spiderMan = new WebSpider();
+		spiderMan.crawl();
+		System.out.println("Done!");
+	}
+	
+}
